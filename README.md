@@ -21,6 +21,7 @@ Mediasoup docs specify that the app must run in HTTPS, and that we need to add P
 ```bash
 cd server
 mkcert -install
+mkdir src/certs
 mkcert -key-file ./src/certs/cert-key.pem -cert-file ./src/certs/cert.pem localhost
 ```
 
