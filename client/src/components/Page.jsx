@@ -127,22 +127,18 @@ export default function SFEVoiceTest2() {
             existingProducers,
           } = response;
   
-          // Device 생성 및 로드
           const newDevice = await createDevice(rtpCapabilities);
-          // 송신용 Transport 생성
           const newSendTransport = createSendTransport(
             newDevice,
             sendTransportOptions
           );
   
-          // 수신용 Transport 생성
           createRecvTransport(newDevice, recvTransportOptions);
   
           if(!newDevice.canProduce('audio')) console.log('no audio')
   
           sfuSocket.on("new-producer", handleNewProducer);
   
-          // 오디오 스트림 캡처 및 Producer 생성
           const audioTrack = await getLocalAudioStreamAndTrack();
           const newAudioProducer = await newSendTransport.produce({
             track: audioTrack,
@@ -150,7 +146,6 @@ export default function SFEVoiceTest2() {
           newAudioProducer.resume();
           setAudioProducer(newAudioProducer);
   
-          // 기존 참여자 목록 업데이트
           setPeers(peerIds.filter((id) => id !== sfuSocket.id));
           sfuSocket.on("peer-left", ({ peerId }) => {
             setPeers((prevPeers) => prevPeers.filter((id) => id !== peerId));
@@ -160,8 +155,7 @@ export default function SFEVoiceTest2() {
           });
 
           for (const producerInfo of existingProducers) {
-            const data = {producerId: producerInfo.id, ...producerInfo}
-            await consume(data);
+            await consume(producerInfo);
           }
   
           setJoined(true);
@@ -240,33 +234,6 @@ export default function SFEVoiceTest2() {
         
         if(consumer.track.kind === 'audio') setRemoteAudioStreams(prev => [...prev, {peerId, stream: remoteStream}])
         if(consumer.track.kind === 'video') setRemoteVideoStreams(prev => [...prev, {peerId, stream: remoteStream}])
-        
-        
-
-        // if (consumer.kind === "video") {
-        //   const videoElement = document.createElement("video");
-        //   videoElement.srcObject = remoteStream;
-        //   videoElement.autoplay = true;
-        //   videoElement.playsInline = true;
-        //   videoElement.width = 200;
-        //   document.getElementById("remote-media")?.appendChild(videoElement);
-        // } else if (consumer.kind === "audio") {
-        //   const audioElement = document.createElement("audio");
-        //   audioElement.srcObject = remoteStream;
-        //   audioElement.autoplay = true;
-        //   audioElement.controls = true;
-        //   // const audio = new Audio();
-        //   // audio.srcObject = remoteStream;
-        //   // audio.play().catch((err) => console.warn("Autoplay error:", err));
-        //   document.getElementById("remote-media")?.appendChild(audioElement);
-  
-        //   // 브라우저의 자동재생 정책을 우회하기 위해 재생 시도
-        //   try {
-        //     await audioElement.play();
-        //   } catch (err) {
-        //     console.error("Audio playback failed:", err);
-        //   }
-        // }
       }
     );
   };
@@ -286,7 +253,6 @@ export default function SFEVoiceTest2() {
   
       const videoTrack = stream.getVideoTracks()[0];
   
-      // 비디오 Producer 생성
       const newVideoProducer = await sendTransport.produce({ track: videoTrack });
       setVideoProducer(newVideoProducer);
     } catch (error) {
