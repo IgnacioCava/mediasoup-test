@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "types": ["node", "express"],
+    "target": "ES2020",               // You can adjust this based on your needs
+    "module": "CommonJS",              // Required for Node.js compatibility
+    "moduleResolution": "node",        // Ensure Node.js-style module resolution
+    "outDir": "./dist",                // Output directory for compiled files
+    "esModuleInterop": true,           // Ensure ES module compatibility
+    "skipLibCheck": true,              // Skip library type checks for better performance
+    "strict": true,                    // Enable strict mode
+    "resolveJsonModule": true,          // If you need to import JSON files
+    "baseUrl": "./",
+    "paths": {
+      "@socket": ["src/socket"],
+      "@socket/*": ["src/socket/*"],
+      "@prisma": ["src/prisma"],
+      "@prisma/*": ["src/prisma/*"],
+      "@types/*": ["src/types/*"],
+      "@customTypes/*": ["src/customTypes/*"],
+      "@services/*": ["src/services/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@utils/*": ["src/utils/*"],
+      "@lib/*": ["src/lib/*"],
+      "@constants/*": ["src/constants/*"],
+      "@middleware/*": ["src/middleware/*"],
+    }
+  },
+  "include": ["src/**/*.ts", "src/customTypes/**/*.d.ts"],           // Include all TypeScript files in the src folder
+  "exclude": ["node_modules"]
+}

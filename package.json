@@ -1,0 +1,22 @@
+{
+  "name": "discord-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client/*",
+    "server/*"
+  ],
+  "scripts": {
+    "init-deps": "yarn install && concurrently \"yarn i-deps-front\" \"yarn i-deps-back\" --names \"frontend,backend\" --prefix \"[{name}]\"",
+    "dev": "concurrently \"yarn start-front\" \"yarn start-back\" --names \"frontend,backend\" --prefix \"[{name}]\"",
+    "start-front": "cd client && yarn start",
+    "start-back": "cd server && yarn dev",
+    "i-deps-front": "cd client && yarn install",
+    "i-deps-back": "cd server && yarn install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
