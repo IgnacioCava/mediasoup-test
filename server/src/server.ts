@@ -28,7 +28,7 @@ try {
   });
 
   if (
-    !fs.existsSync("src/certs/cer-key.pem") ||
+    !fs.existsSync("src/certs/cert-key.pem") ||
     !fs.existsSync("src/certs/cert.pem")
   ) {
     throw "Missing cert files! Check the README on how to create them";
@@ -36,7 +36,7 @@ try {
 
   // Create HTTPS server
   const key = fs.readFileSync("src/certs/cert-key.pem");
-  const cert = fs.readFileSync("src/crts/cert.pem");
+  const cert = fs.readFileSync("src/certs/cert.pem");
 
   const server = https.createServer({ key, cert }, app);
 
